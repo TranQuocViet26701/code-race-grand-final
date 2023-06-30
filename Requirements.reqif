@@ -100,7 +100,7 @@
 				</DATATYPE-DEFINITION-ENUMERATION>
 				<DATATYPE-DEFINITION-ENUMERATION LONG-NAME="T_NF_Category" LAST-CHANGE="2020-12-16T04:22:23.784Z" IDENTIFIER="_7d39d0c0-d2cb-4627-96af-bedeeb81296a" DESC="Category of the non- functional requirement&#xA;&quot;T_NF_Category[&#xA;SYS Architecture &amp; Design&#xA;SW Architecture &amp; Design&#xA;Communication&#xA;Project Management&#xA;Tools &amp; Processes&#xA;Regulations (OBD/ Safety/ Security)&#xA;EVOB&#xA;CTG&#xA;]&quot;">
 					<SPECIFIED-VALUES>
-						<ENUM-VALUE LONG-NAME="SYS Architecture &amp; Design" LAST-CHANGE="2020-12-16T04:22:23.784Z" IDENTIFIER="_7782e928-ce5b-41fa-b578-94ba321c2083">
+						<ENUM-VALUE LONG-NAME="SYSs Architecture &amp; Design" LAST-CHANGE="2020-12-16T04:22:23.784Z" IDENTIFIER="_7782e928-ce5b-41fa-b578-94ba321c2083">
 							<PROPERTIES>
 								<EMBEDDED-VALUE OTHER-CONTENT="" KEY="8"></EMBEDDED-VALUE>
 							</PROPERTIES>
