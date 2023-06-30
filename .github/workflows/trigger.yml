@@ -1,0 +1,64 @@
+name: Trigger Airflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.reqif'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.reqif'
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 0 }}
+
+    - name: Trigger Airflow
+      env:
+        API_URL: ${{ secrets.API_ENDPOINT }}/api/v1/dags/thethree_reqif_to_rst/dagRuns
+        USERNAME: ${{ secrets.AIRFLOW_USERNAME}}
+        PASSWORD: ${{ secrets.AIRFLOW_PASSWORD }}
+      run: |
+      
+        if ${{ github.event_name == 'pull_request' }}; then
+          changed_filenames=$(git diff --name-only -r HEAD^1 HEAD)
+        else
+            changed_filenames=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
+        fi
+      
+        changed_files="["
+        
+        IFS=$'\n'   # Set the input field separator to newline
+        for file in $changed_filenames; do
+          content=$(cat "$file" | gzip | base64 -w0)
+          changed_files+="{'name': '$file', 'content': '$content'},"
+        done
+        changed_files="${changed_files%?}" # Remove the trailing comma
+        changed_files+="]"
+        
+        payload="
+        {
+          'conf': {
+            'reqif_files': $changed_files
+          },
+          'note': 'Trigger from Github Action'
+        }
+        "
+        payload=$(echo "$payload" | sed "s/'/\"/g")
+        echo $payload
+        
+        
+        curl -X POST \
+          -H "Content-Type: application/json" \
+          -H "ngrok-skip-browser-warning: True" \
+          --user "$USERNAME:$PASSWORD" \
+          -d "$payload" \
+          $API_URL
